@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for django-crud-ajax-login-register-fileupload-master on 2023-12-02T15:34:38-03:00
+# fly.toml app configuration file generated for django-crud-ajax-login-register-fileupload-master-wandering-field-1384 on 2023-12-02T17:21:42-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "django-crud-ajax-login-register-fileupload-master"
+app = "django-crud-ajax-login-register-fileupload-master-wandering-field-1384"
 primary_region = "gru"
 console_command = "/code/manage.py shell"
 
