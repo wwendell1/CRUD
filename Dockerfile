@@ -1,15 +1,24 @@
-FROM python AS builder
+ARG PYTHON_VERSION=3.11-slim-bullseye
+
+FROM python:${PYTHON_VERSION}
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir -p /code
+
+WORKDIR /code
+
+COPY requirements.txt /tmp/requirements.txt
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+COPY . /code
+
+ENV SECRET_KEY "v2UzsIhfEDujwSBQ483IkBTyllUHuR3WNrQOhAOO3Iubqmry2e"
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 8000
 
-WORKDIR /mysite
-
-COPY requirements.txt /mysite
-
-RUN pip install --upgrade pip
-
-RUN pip install --upgrade pip setuptools wheel
-RUN pip install -r requirements.txt
-COPY . /mysite
-
-ENTRYPOINT ["python"]
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "mysite.wsgi"]
